@@ -2,9 +2,13 @@
 @import "./styles/variables";
 
 body {
-  background-color: $darkgray;
+  background-color:$darkgray;
+
+  #nav-container {
+    height: 60px;
+  }
 
   #button-container {
-    margin-top: 100px;
+    margin-top: 15px;
   }
 }
