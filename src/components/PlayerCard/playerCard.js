@@ -10,7 +10,6 @@ const createPlayerCard = (player) => {
       <h5 class="player-position-${player.position.toLowerCase()}">${player.position}</h5>
     </li>
   `;
-
   return domString;
 };
 
