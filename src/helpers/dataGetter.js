@@ -23,7 +23,7 @@ const getAllPlayersFromDb = () => new Promise((resolve, reject) => {
         });
       }
       // console below will tell us what we are passing back
-      console.log('array', allPlayersArray);
+      // console.log('array', allPlayersArray);
       resolve(allPlayersArray);
     })
     .catch((err) => {
@@ -33,11 +33,21 @@ const getAllPlayersFromDb = () => new Promise((resolve, reject) => {
 
 const getPlayersByTeam = teamId => new Promise((resolve, reject) => {
   axios
-    .get(`${baseUrl}/players.json`)
-    .then((data) => {
-      const allPlayers = data.data;
-      const correctPlayers = allPlayers.filter(x => x.teamId === teamId);
-      resolve(correctPlayers);
+    // getting firebase to filter through the players that only have teamId equal to
+    // the teamId that was passed in
+    .get(`${baseUrl}/players.json?orderBy="teamId"&equalTo="${teamId}"`)
+    .then((result) => {
+      const allPlayersObject = result.data;
+      const allPlayersArray = [];
+      if (allPlayersObject != null) {
+        Object.keys(allPlayersObject).forEach((playerId) => {
+          const newPlayer = allPlayersObject[playerId];
+          newPlayer.id = playerId;
+          allPlayersArray.push(newPlayer);
+        });
+      }
+      // console.log('array', allPlayersArray);
+      resolve(allPlayersArray);
     })
     .catch((err) => {
       reject(err);
@@ -57,7 +67,7 @@ const getAllTeamsFromDb = () => new Promise((resolve, reject) => {
           allTeamsArray.push(newTeam);
         });
       }
-      console.log('array', allTeamsArray);
+      // console.log('array', allTeamsArray);
       resolve(allTeamsArray);
     })
     .catch((err) => {
@@ -78,7 +88,7 @@ const getAllPositionsFromDb = () => new Promise((resolve, reject) => {
           allPositionsArray.push(newPosition);
         });
       }
-      console.log('array', allPositionsArray);
+      // console.log('array', allPositionsArray);
       resolve(allPositionsArray);
     })
     .catch((err) => {
